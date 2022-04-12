@@ -1,9 +1,11 @@
 from django.urls import path
-from inventario.views import (
-    AutorListView, GeneroListView, PaisListView, EditorialListView,
-    OtrosAutoresListView, IVAListView, ProductoListView, ProductoCreateView,
-    ProductoUpdateView, ProductoDeleteView
-)
+from inventario.vistas.iva import IVAListView
+from inventario.vistas.otros_autores import OtrosAutoresListView
+from inventario.vistas.editorial import EditorialListView
+from inventario.vistas.pais import PaisListView
+from inventario.vistas.genero import GeneroListView
+from inventario.vistas.autor import AutorListView
+from inventario.vistas.producto import ProductoListView, ProductoUpdateView, ProductoCreateView, ProductoDeleteView
 
 urlpatterns = [
     # listados
