@@ -1,0 +1,79 @@
+from django.db import models
+
+
+class Autor(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=200, verbose_name="nombre")
+    apellido = models.CharField(max_length=200, verbose_name="apellido")
+    es_activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.nombre} {self.apellido}"
+
+
+class Genero(models.Model):
+    nombre = models.CharField(max_length=200, verbose_name="genero", unique=True)
+
+    def __str__(self):
+        return self.nombre
+
+
+class Pais(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=200, verbose_name="pais")
+
+    def __str__(self):
+        return self.nombre
+
+
+class Editorial(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=200, verbose_name="editorial")
+    pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
+
+
+class OtrosAutores(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=200, verbose_name="nombre")
+    cargo = models.CharField(max_length=200, verbose_name="cargo")
+
+    def __str__(self):
+        return f"{self.nombre}, {self.cargo}"
+
+
+class IVA(models.Model):
+    iva = models.IntegerField(verbose_name="iva")
+
+    def __str__(self):
+        return f"{self.iva}%"
+
+
+class Producto(models.Model):
+    isbn = models.CharField(max_length=200, verbose_name="isbn", unique=True)
+    titulo_es = models.CharField(max_length=200, verbose_name="titulo")
+    titulo_jp = models.CharField(max_length=200, verbose_name="titulo jp", blank=True)
+    stock = models.IntegerField(verbose_name="stock", blank=False)
+    portada = models.CharField(max_length=200, verbose_name="ruta de portada portada")
+    precio = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="precio")
+    descripcion = models.CharField(max_length=200, verbose_name="descripcion", blank=True)
+    numero_paginas = models.IntegerField(verbose_name="numero de paginas")
+    es_color = models.BooleanField(default=False)
+    fecha_publicacion = models.DateField(verbose_name="fecha de publicacion")
+    esta_publicado = models.BooleanField(default=False)
+    es_destacado = models.BooleanField(default=False)
+    # conexiones
+    autor = models.ForeignKey(Autor, on_delete=models.CASCADE)
+    editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
+    genero = models.ManyToManyField(Genero, verbose_name="genero")
+    otros_autores = models.ManyToManyField(OtrosAutores, verbose_name="otros autores", blank=True)
+    iva = models.ForeignKey(IVA, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.titulo_es
+
+    @property
+    def precio_con_iva(self):
+        return self.precio + (self.precio * self.iva.iva / 100)

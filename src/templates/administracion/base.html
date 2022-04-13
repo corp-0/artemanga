@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <title>{% block titulo %} {% endblock %}</title>
+
+</head>
+
+<body>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <div class="container-fluid">
+        <a href="#" class="navbar-brand">Brand</a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="nav-item">
+                    <a href="{% url 'inventario-dashboard' %}" class="nav-link">Home</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Bodega</a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'listado-producto' %}" class="dropdown-item">Producto</a>
+                        <a href="{% url 'listado-autor' %}" class="dropdown-item">Autor</a>
+                        <a href="{% url 'listado-otro-autor' %}" class="dropdown-item">Otros Autores</a>
+                        <a href="{% url 'listado-producto' %}" class="dropdown-item">Producto</a>
+                        <a href="{% url 'listado-genero' %}" class="dropdown-item">Genero</a>
+                        <a href="{% url 'listado-editorial' %}" class="dropdown-item">Editorial</a>
+                        <a href="{% url 'listado-pais' %}" class="dropdown-item">Pais</a>
+                        <a href="{% url 'listado-iva' %}" class="dropdown-item">IVA</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Ventas</a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Absolutamente nada</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Reportes</a>
+                </li>
+
+
+            </ul>
+
+{#            opciones de usuario#}
+            <ul class="nav navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Admin</a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a href="#" class="dropdown-item">Salir</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+<div class="container py-4">
+    {% block body %}
+    {% endblock %}
+</div>
+
+{% block extra_javascript %}
+{% endblock %}
+
+</body>
+
+</html>
