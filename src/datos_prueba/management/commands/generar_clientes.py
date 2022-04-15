@@ -5,12 +5,15 @@ from tqdm import tqdm
 
 
 class Command(BaseCommand):
-    help = 'Genera 100 clientes de prueba'
+    help = 'Genera una cantidad de clientes de prueba'
     fake = Faker(['es_ES'])
 
+    def add_arguments(self, parser):
+        parser.add_argument('--cantidad', type=int, default=100)
+
     def handle(self, *args, **options):
-        print('Generando clientes...')
-        for _ in tqdm(range(100)):
+        print(f'Generando {options.get("cantidad")} clientes...')
+        for _ in tqdm(range(options.get('cantidad'))):
             self.generar_cliente()
 
         print(f'generados {Usuario.objects.count()} clientes')

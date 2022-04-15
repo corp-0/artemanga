@@ -13,14 +13,19 @@ from tqdm import tqdm
 class Command(BaseCommand):
     help = 'Genera datos de prueba para el módulo de ventas'
     fake = Faker(['es_ES'])
+    cantidad: int = 0
+
+    def add_arguments(self, parser):
+        parser.add_argument('--cantidad', type=int, default=100, help='Cantidad de ventas a generar')
 
     def handle(self, *args, **options):
+        self.cantidad = options['cantidad']
         self.generar_despachos()
         self.generar_ventas()
 
     def generar_despachos(self):
         print('Generando despachos...')
-        for _ in tqdm(range(0, 10)):
+        for _ in tqdm(range(self.cantidad)):
             calle = self.fake.street_name()
             numero = self.fake.building_number()
             region = self.fake.state()
