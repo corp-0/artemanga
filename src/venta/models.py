@@ -24,4 +24,4 @@ class VentaProducto(models.Model):
     class Meta:
         unique_together = ('venta', 'producto')
         verbose_name = "Productos de la venta"
-        verbose_name_plural = "Productos de las venta"
+        verbose_name_plural = "Productos de la venta"
