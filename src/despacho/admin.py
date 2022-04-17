@@ -24,4 +24,4 @@ class DireccionAdmin(admin.ModelAdmin):
 
 @admin.register(Despacho)
 class DespachoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'estado', 'usuario')
+    list_display = ('id', 'estado', 'usuario', 'direccion')

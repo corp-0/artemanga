@@ -23,7 +23,7 @@ class Command(BaseCommand):
     def generar_regiones(self):
         print('Creando regiones...')
         for region in tqdm(regiones):
-            r = Region.objects.create(nombre=region[1].upper())
+            r = Region.objects.create(id=region[0], nombre=region[1].upper())
             r.save()
 
     def generar_provincia(self):
@@ -31,7 +31,7 @@ class Command(BaseCommand):
         for prov in tqdm(provincias):
             id_region = prov[2]
             region = Region.objects.get(id=id_region)
-            p = Provincia.objects.create(nombre=prov[1].upper(), region=region)
+            p = Provincia.objects.create(id=prov[0], nombre=prov[1].upper(), region=region)
             p.save()
 
     def generar_comunas(self):
@@ -39,5 +39,5 @@ class Command(BaseCommand):
         for comuna in tqdm(comunas):
             id_provincia = comuna[2]
             prov = Provincia.objects.get(id=id_provincia)
-            c = Comuna.objects.create(nombre=comuna[1].upper(), provincia=prov)
+            c = Comuna.objects.create(id=comuna[0], nombre=comuna[1].upper(), provincia=prov)
             c.save()
