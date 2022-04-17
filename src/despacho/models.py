@@ -80,7 +80,7 @@ class Direccion(models.Model):
         return f"{self.calle} #{self.numero}, {self.comuna}"
 
     def __str__(self):
-        return self.direccion_corta
+        return self.direccion_completa
 
 
 class Despacho(models.Model):
