@@ -204,6 +204,12 @@ img{
     transform: rotate(-90deg);
     color: white;
 }
+.productoo{
+  border: 100px solid  #ccc;
+    padding: 0px;
+    text-align: center;
+    position:relative;
+}
 
 .product__title {
     text-align: center;
