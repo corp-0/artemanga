@@ -20,5 +20,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^inventario/', include('inventario.urls')),
     re_path(r'^cuenta-usuario/', include('cuenta_usuario.urls')),
+
     path('', include('catalogo.urls'))
+
+    path('cuenta-usuario/', include('django.contrib.auth.urls'))
+
 ]
