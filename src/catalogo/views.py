@@ -1,5 +1,3 @@
-from re import template
-from django.shortcuts import render
 from django.views.generic import TemplateView
 from inventario.models import Genero, Editorial
 
@@ -10,7 +8,8 @@ class Home(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Home, self).get_context_data(**kwargs)
-        context['categoria'] = Genero.objects.all()
-        context['editorial'] = Editorial.objects.all()
+        context['categorias'] = Genero.objects.all()
+        context['editoriales'] = Editorial.objects.all()
 
         return context
+        
