@@ -9,8 +9,8 @@ def carrito_nombre_producto(pk: int):
     producto: Producto = Producto.objects.get(pk=pk)
     return producto.titulo_es
 
-@register.simple_tag(takes_context=True)
-def carrito_precio_unitario_producto(context, pk: int):
+@register.simple_tag()
+def carrito_precio_unitario_producto(pk: int):
     producto: Producto = Producto.objects.get(pk=pk)
     return producto.precio
 
