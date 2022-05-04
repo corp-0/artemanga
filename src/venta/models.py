@@ -111,10 +111,10 @@ class Venta(models.Model):
     # conexiones
     despacho = models.OneToOneField(Despacho, on_delete=models.CASCADE)
 
-    def save(self, *args, **kwargs):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if self.fecha_venta is None:
             self.fecha_venta = datetime.now()
-        super().save(*args, **kwargs)
+        super().save(force_insert, force_update, using, update_fields)
 
 
 class VentaProducto(models.Model):
