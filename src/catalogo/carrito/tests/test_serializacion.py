@@ -45,7 +45,7 @@ class Serializacion(TestCase):
         carrito = Carrito.deserializar(dicc)
         self.assertEqual(len(carrito.productos), 2)
         self.assertEqual(carrito.productos[0].cantidad, 1)
-        self.assertEqual(carrito.productos[0].producto_id, 1)
+        self.assertEqual(carrito.productos[0].pk, 1)
         self.assertEqual(dicc, carrito.serializar())
 
     def test_al_deserializar_con_dicc_invalido_levanta_excepcion(self):
