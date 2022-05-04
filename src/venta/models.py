@@ -111,6 +111,11 @@ class Venta(models.Model):
     # conexiones
     despacho = models.OneToOneField(Despacho, on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        if self.fecha_venta is None:
+            self.fecha_venta = datetime.now()
+        super().save(*args, **kwargs)
+
 
 class VentaProducto(models.Model):
     venta = models.ForeignKey(Venta, on_delete=models.CASCADE)
