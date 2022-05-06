@@ -1,0 +1,59 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block contenido %}
+
+<div class="container prod ucto my-5 pt-5">
+    <div class="row mt-5">
+        <div class="col-lg-5 col-md-12 col-12">
+            <img class="img-fluid w-100 pb-1" src="{{object.portada.url}}" alt="">
+
+            <div class="small-img-group">
+                <div class="small-img-col">
+                    <img src="{{object.portada.url}}" width="100%" class="small-img" alt="">
+                </div>
+                <div class="small-img-col">
+                    <img src="{{object.portada.url}}" width="100%" class="small-img" alt="">
+                </div>
+                <div class="small-img-col">
+                    <img src="{{object.portada.url}}" width="100%" class="small-img" alt="">
+                </div>
+                <div class="small-img-col">
+                    <img src="{{object.portada.url}}" width="100%" class="small-img" alt="">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-5 col-md-12 col-12 text-center">
+            <h1>{{object.titulo_es}}</h1>
+            <h6>Sinopsis</h6>
+            <p>{{object.descripcion}}
+            </p>
+
+            <h5>Géneros :</h5>
+            <h5>ISBN : </h5>
+            <h5>Editorial : </h5>
+
+            <div class="row text-center">
+                <h4><strong>$20.000</strong></h4>
+            </div>
+            <div class="row text-center">
+                <h6>!Hay Stock!</h6>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-3 p-2">
+                    <button type="button" class="btn btn-warning">
+                        <i class="fa-solid fa-cart-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+{% endblock %}
