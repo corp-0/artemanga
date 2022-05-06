@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import redirect_to_login
 from django.shortcuts import resolve_url
 from django.urls import reverse_lazy
+from artemangaweb.exceptions import PaginaPreviaNoPermitida
 
 from cuenta_usuario.enums.opciones import TipoUsuario
 
@@ -38,7 +39,7 @@ class VistaRestringidaMixin(LoginRequiredMixin):
     login_url = reverse_lazy('login')
     permission_denied_message = 'No tiene permisos para acceder a esta página. ' \
                                 'Si crees que deberías, por favor contacta al administrador de sistema.'
-
+    todos_los_usuarios = [TipoUsuario.ADMINISTRADOR, TipoUsuario.BODEGA, TipoUsuario.VENTAS, TipoUsuario.CLIENTE]
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
@@ -67,3 +68,25 @@ class VistaRestringidaMixin(LoginRequiredMixin):
     @property
     def valores_usuarios_permitidos(self):
         return [tipo.value for tipo in self.usuarios_permitidos]
+
+
+class ImpedirSinRedireccionMixin:
+    """
+    Mixin que impide que se pueda acceder a una vista si no viene de una redirección.
+    Es posible sobrescribir ``paginas_permitidas`` para definir exactamente qué páginas se permiten.
+    """
+    paginas_permitidas = ["*"]
+
+    def dispatch(self, request, *args, **kwargs):
+        pagina_anterior = request.META.get('HTTP_REFERER', )
+
+        if not pagina_anterior:
+            raise PaginaPreviaNoPermitida('Sin página previa')
+
+        for pagina in self.paginas_permitidas:
+            if pagina in pagina_anterior or pagina == "*":
+                return super().dispatch(request, *args, **kwargs)
+
+        raise PaginaPreviaNoPermitida(pagina_anterior)
+
+
