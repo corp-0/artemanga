@@ -3,7 +3,7 @@ from datetime import datetime
 from inventario.models import Editorial, Genero, Producto
 from catalogo.carrito.models import Carrito
 from catalogo.models import Oferta
-from django.db.models import F, ExpressionWrapper, DateField, Q
+from django.db.models import Q
 
 def obtener_editoriales_y_categorias(request):
     editoriales = Editorial.objects.all()
