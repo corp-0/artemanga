@@ -35,7 +35,7 @@
 
 <script>
     agregarProducto = (id) => {
-        $.post('agregar-producto-carrito', {pk: id, csrfmiddlewaretoken: '{{ csrf_token }}'},
+        $.post('{% url "ajax-agregar-producto-carrito" %}', {pk: id, csrfmiddlewaretoken: '{{ csrf_token }}'},
             (_) => {
                 location.href = ('{% url "ver-carrito" %}')
             })
