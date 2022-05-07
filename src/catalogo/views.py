@@ -8,6 +8,12 @@ from inventario.models import Producto, Genero, Editorial
 class Home(TemplateView):
     template_name= "web/index.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['randoms'] = Producto.objects.order_by('?')[:5]
+        return context
+
+
 class VerCarritoView(TemplateView):
     template_name = 'web/carrito.html'
 
