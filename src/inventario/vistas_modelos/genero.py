@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 
-from artemangaweb.mixins import MensajeResultadoFormMixin, VistaRestringidaMixin
+from artemangaweb.mixins import VistaRestringidaMixin
 from cuenta_usuario.enums.opciones import TipoUsuario
 from inventario.models import Genero
 from .vistas_genericas import CrearGenericoView, ActualizarGenericoView, EliminarGenericoView, ListaGenericaView
