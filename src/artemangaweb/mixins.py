@@ -11,8 +11,8 @@ from cuenta_usuario.enums.opciones import TipoUsuario
 
 
 class MensajeResultadoFormMixin:
-    mensaje_exito = None
-    mensaje_error = None
+    mensaje_exito = 'Operación realizada con éxito'
+    mensaje_error = 'Operación ha fallado'
 
     def get_mensaje_exito(self):
         return self.mensaje_exito
