@@ -76,7 +76,7 @@ class ListaGenericaView(TituloPaginaMixin, ListView):
     def nombre_modelo_plural(self):
         return self.model._meta.verbose_name_plural.title()
 
-    def get_titulo_pagina(self, **kwargs):
+    def get_titulo_pagina(self):
         if self.titulo_pagina:
             return self.titulo_pagina
         return f"Listado de {self.nombre_modelo_plural}"
