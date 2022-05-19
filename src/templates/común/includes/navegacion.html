@@ -1,0 +1,17 @@
+{% if navigations %}
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {% for navigation in navigations %}                
+                <li class="breadcrumb-item {% if navigation.active %}active{% endif %}">
+                    {% if navigation.active %}
+                        {{ navigation.Description }}
+                    {% else %}
+                        <a href="{{ navigation.url }}">{{ navigation.Description }}</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+     </nav>
+
+{% endif %}

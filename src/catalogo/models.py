@@ -1,9 +1,11 @@
+import string
 from django.db import models
 from inventario.models import Producto, Genero, Editorial
 import datetime
 from .enums.opciones import ESTADO_CAMPANNA_CHOICES, REDIRIGEA_CHOICES, EstadoCampanna, RedirigeA
 from django.core.validators import URLValidator, ValidationError
 from django.shortcuts import reverse
+from dataclasses import dataclass
 
 class Oferta(models.Model):
     id = models.OneToOneField(Producto, on_delete=models.CASCADE, primary_key=True)
@@ -126,3 +128,10 @@ class Campanna(models.Model):
                 raise ValidationError({'redirige_a': f'El tipo de redirección: {self.redirige_a} no es válido.'})
 
 
+
+        
+@dataclass
+class Navigation:
+    url: string
+    Description: string
+    active: bool
