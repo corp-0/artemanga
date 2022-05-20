@@ -10,9 +10,9 @@ from inventario.models import Producto, Genero, Editorial
 class Home(TemplateView):
     template_name= "web/index.html"
 
-    def get_context_data(self, **kwargs):   
+    def get_context_data(self, **kwargs):
 
-        navigation = Navigation(url= "", Description="Index", active=True)         
+        navigation = Navigation(url= "", Description="Index", active=True)
 
         context = super().get_context_data(**kwargs)
         context['randoms'] = Producto.objects.order_by('?')[:5]
@@ -82,24 +82,24 @@ class DetalleProducto(DetailView):
 
     template_name= "web/detalle_pro.html"
     model= Producto
-    
+
     def get_context_data(self, **kwargs):  
         navigations = [ Navigation(url= "/", Description="Index", active=False), Navigation(url= "", Description="Detalle Producto", active=True) ]
         
-        context = super().get_context_data(**kwargs)        
+        context = super().get_context_data(**kwargs)
         context['navigations'] = navigations
 
         return context
     
 
-# class AgregarProductoCarritoDesdeListaView(TemplateView):
-#     template_name = 'web/carrito.html'
+class AgregarProductoCarritoDesdeListaView(TemplateView):
+    template_name = 'web/carrito.html'
     
-#     def post(self, request):
-#         carrito: Carrito = Carrito.deserializar(request.session['carrito'])
-#         data = request.POST
-#         pk = int(data['pk'])
-#         producto = EntradaCarrito(1, pk)
-#         carrito.agregar_producto(producto)
-#         carrito.guardar(request.session)
+    def post(self, request):
+        carrito: Carrito = Carrito.deserializar(request.session['carrito'])
+        data = request.POST
+        pk = int(data['pk'])
+        producto = EntradaCarrito(1, pk)
+        carrito.agregar_producto(producto)
+        carrito.guardar(request.session)
         
