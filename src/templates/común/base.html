@@ -25,9 +25,13 @@
     {% block navbar %}{% endblock %}
     {% block pre-contenido %}
     <div class="container py-4">
-        {% include 'común/includes/navegacion.html' %}
-        {% block contenido %}
-        {% endblock %}
+        <div class="row">
+            {% include 'común/includes/navegacion.html' %}
+        </div>
+        <div class="row">
+            {% block contenido %}
+            {% endblock %}
+        </div>
     </div>
     {% endblock %}
 
