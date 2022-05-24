@@ -40,6 +40,8 @@
         $.post('{% url "ajax-agregar-producto-carrito" %}', {pk: id, csrfmiddlewaretoken: '{{ csrf_token }}'},
             (_) => {
                 console.log("El producto se agrego correctamente.");
+                location.href = ('{% url "ver-carrito" %}');
+                {#location.reload(false); Cuando logremos mostrar un toast, quitar lo de arriba y quizás eliminar esto #}
             })
     }
 </script>
