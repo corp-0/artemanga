@@ -14,6 +14,10 @@ class Oferta(models.Model):
     fecha_inicio = models.DateField(verbose_name="fecha inicio")
     fecha_fin = models.DateField(verbose_name="fecha fin")
 
+    def __str__(self):
+        return f"Oferta {'activa' if self.es_valida else 'inactiva'} " \
+               f"para {self.producto.titulo_es} por {self.descuento}% de descuento"
+
     @property
     def es_valida(self):
         fecha_actual = datetime.date.today()
