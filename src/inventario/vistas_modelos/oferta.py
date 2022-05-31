@@ -25,8 +25,10 @@ class OfertaCreateView(VistaRestringidaMixin, CrearGenericoView):
 class OfertaUpdateView(VistaRestringidaMixin, ActualizarGenericoView):
     usuarios_permitidos = [TipoUsuario.ADMINISTRADOR, TipoUsuario.VENTAS]
     model = Oferta
+    form_class = OfertaForm
     template_name = 'administración/CRUD/form_generico.html'
     success_url = reverse_lazy('listado-ofertas')
+    fields = None
 
 
 class OfertaDeleteView(VistaRestringidaMixin, EliminarGenericoView):

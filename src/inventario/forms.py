@@ -51,7 +51,7 @@ class DespachoForm(forms.ModelForm):
 class OfertaForm(forms.ModelForm):
     fecha_inicio = forms.DateField(
         widget=forms.DateInput(attrs={
-            'id': 'datepicker',
+            'id': 'oferta_fecha_inicio',
             'data-date-format': 'dd/mm/yyyy',
             'data-date-language': 'es',
         }),
@@ -59,7 +59,7 @@ class OfertaForm(forms.ModelForm):
 
     fecha_fin = forms.DateField(
         widget=forms.DateInput(attrs={
-            'id': 'datepicker',
+            'id': 'oferta_fecha_fin',
             'data-date-format': 'dd/mm/yyyy',
             'data-date-language': 'es',
         }),
