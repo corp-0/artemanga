@@ -1,5 +1,6 @@
 from django.db import models
 from cuenta_usuario.models import Usuario
+from venta.models import Venta
 from .tipo_enum.estado_ticket import ESTADO_TICKET_CHOICES, EstadoTicket
 from .tipo_enum.tipo_ticket import TIPO_TICKET_CHOICES, TipoTicket
 
@@ -11,7 +12,8 @@ class Ticket(models.Model):
     fecha_modificacion = models.DateTimeField(verbose_name="fecha de modificacion")
     estado = models.PositiveSmallIntegerField(choices=ESTADO_TICKET_CHOICES, default=EstadoTicket.PENDIENTE.value)
     # conexiones
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, blank=True, null=True)
+    venta = models.ForeignKey(Venta, on_delete=models.CASCADE, blank=True, null=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
 
 class Mensaje(models.Model):
