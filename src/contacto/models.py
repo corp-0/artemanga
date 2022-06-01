@@ -19,7 +19,7 @@ class Ticket(models.Model):
 class Mensaje(models.Model):
     id = models.AutoField(primary_key=True)
     fecha_creacion = models.DateTimeField(verbose_name="fecha de creacion")
-    mensaje = models.CharField(max_length=200, verbose_name="mensaje")
+    texto = models.CharField(max_length=200, verbose_name="texto")
     # conexiones
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -28,7 +28,7 @@ class Mensaje(models.Model):
 class Respuesta(models.Model):
     id = models.AutoField(primary_key=True)
     fecha_creacion = models.DateTimeField(verbose_name="fecha de creacion")
-    respuesta = models.CharField(max_length=200, verbose_name="respuesta")
+    texto = models.CharField(max_length=200, verbose_name="texto")
     # conexiones
     mensaje = models.OneToOneField(Mensaje, on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
