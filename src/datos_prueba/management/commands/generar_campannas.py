@@ -5,7 +5,7 @@ class Command(BaseCommand):
     help = 'Genera 3 campañas de prueba usando las fotos de los perritos'
 
     def handle(self, *args, **options):
-        print(f'Generando campañas...')
+        print('Generando campañas...')
 
         campanna1 = Campanna(
             nombre='Campanna 1',
