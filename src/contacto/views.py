@@ -1,5 +1,5 @@
-from django.shortcuts import redirect, reverse
-from django.views.generic import DetailView, View
+from django.shortcuts import redirect, reverse, render
+from django.views.generic import DetailView, View, TemplateView
 from django.views.generic.edit import FormMixin
 
 from artemangaweb.mixins import VistaRestringidaMixin
@@ -7,7 +7,7 @@ from cuenta_usuario.enums.opciones import TipoUsuario
 from inventario.vistas_modelos.vistas_genericas import ListaGenericaView
 from .enums.estado_ticket import EstadoTicket
 from .models import Ticket, Mensaje
-from .forms import CrearMensajeForm
+from .forms import CrearMensajeForm, CrearTicketForm
 from django.http import Http404
 
 
@@ -82,7 +82,7 @@ class TicketsAbiertosLisView(VistaRestringidaMixin, ListaGenericaView):
     context_object_name = 'tickets'
     tabla_cabecera = ['Tipo', 'Fecha de creación', 'Usuario', 'Venta']
     tabla_boton_crear = None
-    tabla_boton_editar = None
+    tabla_boton_editar = 'contacto-detalle'
     tabla_boton_eliminar = None
 
 
@@ -104,9 +104,40 @@ class MisTicketsView(VistaRestringidaMixin, ListaGenericaView):
     usuarios_permitidos = VistaRestringidaMixin.todos_los_usuarios
     model = Ticket
     template_name = 'web/usuario/mi_soporte.html'
-    ordering = ['id']
+    ordering = ['-estado']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tickets'] = Ticket.objects.filter(usuario=self.request.user)
+        context['tickets'] = Ticket.objects.filter(usuario=self.request.user).order_by('estado')
         return context
+
+
+class CrearTicketView(VistaRestringidaMixin, TemplateView):
+    usuarios_permitidos = VistaRestringidaMixin.todos_los_usuarios
+    template_name = 'web/contacto/crear_ticket.html'
+
+
+    def get(self, request, *args, **kwargs):
+        ticket_form = CrearTicketForm(usuario=request.user)
+        mensaje_form = CrearMensajeForm()
+        return render(request, self.template_name, {'ticket_form': ticket_form, 'mensaje_form': mensaje_form})
+
+    def post(self, request, *args, **kwargs):
+        ticket_form = CrearTicketForm(request.POST, usuario=request.user)
+        mensaje_form = CrearMensajeForm(request.POST)
+
+        if ticket_form.is_valid() and mensaje_form.is_valid():
+            ticket = Ticket(
+                usuario=request.user,
+                tipo=ticket_form.cleaned_data['tipo'],
+                titulo=ticket_form.cleaned_data['titulo'],
+                venta=ticket_form.cleaned_data['venta'],
+            )
+            ticket.save()
+            Mensaje(
+                ticket=ticket,
+                usuario=request.user,
+                texto=mensaje_form.cleaned_data['texto']
+            ).save()
+
+            return redirect('contacto-detalle', pk=ticket.pk)
