@@ -1,6 +1,5 @@
 from .emailer import Emailer
-from cuenta_usuario.enums.opciones import TipoUsuario
-from cuenta_usuario.models import Usuario
+
 
 def notificar_nuevo_ticket(sender, instance, **kwargs):
     def enviar_correo_cliente():
@@ -24,6 +23,9 @@ def notificar_nuevo_ticket(sender, instance, **kwargs):
         ).enviar()
 
     def enviar_correo_admin():
+        from cuenta_usuario.enums.opciones import TipoUsuario
+        from cuenta_usuario.models import Usuario
+
         asunto = 'Nuevo Ticket'
         titulo_texto_1 = asunto
         cuerpo_texto_1 = f'Hay un nuevo ticket en el portal de soporte!'
