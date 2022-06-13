@@ -31,7 +31,7 @@ def notificar_nuevo_ticket(sender, instance, **kwargs):
         cuerpo_texto_2 = f'<table>' \
                         f'<tr><td><strong>Título</strong>:</td> <td>{instance.titulo}</td></tr>' \
                         f'<tr><td><strong>Usuario</strong>:</td> <td>{instance.usuario}</td></tr>' \
-                        f'<tr><td><strong>Tipo</strong>:</td> <td>{instance.tipo}</td></tr>' \  
+                        f'<tr><td><strong>Tipo</strong>:</td> <td>{instance.tipo}</td></tr>' \
                         f'<tr><td><strong>Estado</strong>:</td> <td>{instance.estado_humanizado}</td></tr>' \
                         f'<tr><td><strong>Fecha de creación</strong>:</td> <td>{instance.fecha_creacion}</td></tr>' \
                         '</table>'
