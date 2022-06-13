@@ -4,7 +4,10 @@ from venta.models import Venta
 from .enums.estado_ticket import ESTADO_TICKET_CHOICES, EstadoTicket
 from .enums.tipo_ticket import TIPO_TICKET_CHOICES, TipoTicket
 from ckeditor.fields import RichTextField
-
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
+from .signals import nuevo_ticket_signal, nuevo_mensaje_admin_signal, nuevo_mensaje_cliente_signal, estado_ticket_cambiado_signal
+from cuenta_usuario.enums.opciones import TipoUsuario
 
 class Ticket(models.Model):
     id = models.AutoField(primary_key=True)
@@ -53,3 +56,33 @@ class Mensaje(models.Model):
 
     def __str__(self):
         return f'#{self.id} - {self.ticket.titulo}'
+
+
+@receiver(pre_save, sender=Ticket)
+def ticket_pre_save(sender, instance, **kwargs):
+    try:
+        obj = Ticket.objects.get(id=instance.id)
+    except Ticket.DoesNotExist:
+        # es un nuevo ticket, no existía antes
+        nuevo_ticket_signal.send(sender=Ticket.__class__, instance=instance)
+    else:
+        # modificando ticket existente, comprobemos si cambió el estado
+        if obj.estado != instance.estado:
+            estado_ticket_cambiado_signal.send(sender=Ticket.__class__, instance=instance)
+
+
+@receiver(pre_save, sender=Mensaje)
+def mensaje_pre_save(sender, instance: Mensaje, **kwargs):
+    # los mensajes no se pueden editar, por lo tanto, asumimos creación.
+    if instance.usuario.tipo_usuario == TipoUsuario.ADMINISTRADOR.value \
+            or instance.usuario.tipo_usuario == TipoUsuario.VENTAS.value\
+            or instance.usuario.tipo_usuario == TipoUsuario.BODEGA.value:
+        # el mensaje es una respuesta de administrador, notificar al cliente
+        nuevo_mensaje_cliente_signal.send(sender=Mensaje.__class__, instance=instance)
+
+    elif instance.usuario.tipo_usuario == TipoUsuario.CLIENTE.value:
+        if instance.ticket.cantidad_mensajes == 0:
+            # este mensaje es el primer mensaje del ticket, omitir notificación
+            return
+        # el mensaje es una respuesta de cliente, notificar a los administradores
+        nuevo_mensaje_admin_signal.send(sender=Mensaje.__class__, instance=instance)
