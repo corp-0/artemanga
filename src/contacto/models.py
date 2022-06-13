@@ -5,7 +5,7 @@ from .enums.estado_ticket import ESTADO_TICKET_CHOICES, EstadoTicket
 from .enums.tipo_ticket import TIPO_TICKET_CHOICES, TipoTicket
 from ckeditor.fields import RichTextField
 from django.dispatch import receiver
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from .signals import nuevo_ticket_signal, nuevo_mensaje_admin_signal, nuevo_mensaje_cliente_signal, estado_ticket_cambiado_signal
 from cuenta_usuario.enums.opciones import TipoUsuario
 
@@ -24,11 +24,11 @@ class Ticket(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
     @property
-    def tipo_ticket_humanizado(self):
+    def tipo_humanizado(self):
         return TipoTicket(self.tipo).name.title()
 
     @property
-    def estado_ticket_humanizado(self):
+    def estado_humanizado(self):
         return EstadoTicket(self.estado).name.title()
 
     @property
@@ -58,13 +58,23 @@ class Mensaje(models.Model):
         return f'#{self.id} - {self.ticket.titulo}'
 
 
+@receiver(post_save, sender=Ticket)
+def ticket_post_save(sender, instance: Ticket, **kwargs):
+    if instance.cantidad_mensajes == 0:
+        # se asume que es un ticket nuevo
+        nuevo_ticket_signal.send(sender=Ticket.__class__, instance=instance)
+    else:
+        # modificando ticket existente
+        pass
+
+
 @receiver(pre_save, sender=Ticket)
-def ticket_pre_save(sender, instance, **kwargs):
+def ticket_pre_save(sender, instance: Ticket, **kwargs):
     try:
         obj = Ticket.objects.get(id=instance.id)
     except Ticket.DoesNotExist:
         # es un nuevo ticket, no existía antes
-        nuevo_ticket_signal.send(sender=Ticket.__class__, instance=instance)
+        pass
     else:
         # modificando ticket existente, comprobemos si cambió el estado
         if obj.estado != instance.estado:

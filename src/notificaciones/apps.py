@@ -45,7 +45,8 @@ class NotificacionesConfig(AppConfig):
 
         cuenta_empleado_creada.connect(notificar_empleado_nueva_cuenta)
 
-        nuevo_ticket_signal.connect(notificar_nuevo_ticket)
+        # esta mierda está rota y no sé por qué, lo intenté todo y no veo por qué está rota
+        # nuevo_ticket_signal.connect(notificar_nuevo_ticket)
         estado_ticket_cambiado_signal.connect(notificar_cliente_cambio_estado_ticket)
         nuevo_mensaje_cliente_signal.connect(notificar_admin_respuesta_cliente)
         nuevo_mensaje_admin_signal.connect(notificar_cliente_respuesta_admin)
