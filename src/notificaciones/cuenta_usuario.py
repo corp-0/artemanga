@@ -5,7 +5,7 @@ def notificar_empleado_nueva_cuenta(sender, instance, **kwargs):
     url_resest = f'https://artemanga.cl/{reverse("password_reset")}'
     asunto = '¡Bievenido a ArteMangaWeb!'
     titulo_texto_1 = asunto
-    cuerpo_texto_1 = f'¡Hola {instance.nombre}!\n' \
+    cuerpo_texto_1 = f'¡Hola {instance.primer_nombre}!\n' \
                     f'¡Gracias por registrarte en ArteMangaWeb!\n' \
                     f'Es para nosotros un agrado tenerte trabajando con nosotros. Hemos creado tu cuenta, pero necesitamos que' \
                     f'para completar tu registro, por favor, hagas click en el siguiente enlace:\n' \
