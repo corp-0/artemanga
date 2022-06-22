@@ -12,7 +12,7 @@ def notificar_empleado_nueva_cuenta(sender, instance, **kwargs):
                     f'<a href={url_resest}>Restablecer contraseña</a>'
     titulo_texto_2 = 'Detalles del Usuario:'
     cuerpo_texto_2 = f'<table>' \
-                    f'<tr><td><strong>Nombre</strong>:</td> <td>{instance.nombre}</td></tr>' \
+                    f'<tr><td><strong>Nombre</strong>:</td> <td>{instance.primer_nombre}</td></tr>' \
                     f'<tr><td><strong>Email</strong>:</td> <td>{instance.email}</td></tr>' \
                     '</table>'
 
