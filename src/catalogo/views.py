@@ -4,11 +4,11 @@ from django.views.generic import TemplateView, View, ListView, DetailView
 from catalogo.carrito.models import Carrito, EntradaCarrito
 from catalogo.models import Campanna
 from catalogo.enums.opciones import EstadoCampanna
-from inventario.models import Producto, Genero, Editorial
+from inventario.models import Producto, Genero, Editorial, Autor
 from django.contrib import messages
 from artemangaweb.mixins import MigaDePanMixin
 from catalogo.carrito.exceptions import StockProductoInsuficiente
-
+from django.shortcuts import redirect
 
 class Home(MigaDePanMixin, TemplateView):
     template_name= "web/index.html"
@@ -89,6 +89,52 @@ class ProductosPorEditorialView(MigaDePanMixin, ListView):
         self.extra_context['filtro_desc'] = 'editorial'
         self.extra_context['filtro'] = editorial
         return Producto.objects.filter(esta_publicado=True).filter(editorial=editorial)
+
+
+class ProductosPorBusquedaView(MigaDePanMixin, ListView):
+    template_name = 'web/catalogo_filtrado.html'
+    context_object_name = 'productos'
+    extra_context = {}
+    nombre_esta_miga = 'Productos por búsqueda'
+
+    def post(self, request):
+        termino_busqueda = request.POST['busqueda']
+        return redirect('productos-por-busqueda', q=termino_busqueda)
+
+
+    def get_queryset(self):
+        termino_busqueda = self.request.GET.get('q', '')
+        self.extra_context['filtro_desc'] = f'{termino_busqueda if termino_busqueda else "sin filtro"}'
+        if not termino_busqueda:
+            return Producto.objects.filter(esta_publicado=True)
+
+        resultados = self.construir_resultados(termino_busqueda)
+        return resultados
+
+    def construir_resultados(self, termino_busqueda: str):
+        resultado= self.productos_por_nombre(termino_busqueda) | \
+            self.productos_por_autor(termino_busqueda) | \
+            self.productos_por_categoria(termino_busqueda)
+
+        return resultado.distinct()
+
+    def productos_por_nombre(self, termino_busqueda: str):
+        return Producto.objects.filter(esta_publicado=True).filter(titulo_es__icontains=termino_busqueda) | \
+                Producto.objects.filter(esta_publicado=True).filter(titulo_jp__icontains=termino_busqueda)
+
+    def productos_por_autor(self, termino_busqueda: str):
+        autores = Autor.objects.filter(nombre__icontains=termino_busqueda) | \
+                Autor.objects.filter(apellido__icontains=termino_busqueda)
+        return Producto.objects.filter(esta_publicado=True).filter(autor__in=autores)
+
+    def productos_por_categoria(self, termino_busqueda: str):
+        return Producto.objects.filter(esta_publicado=True).filter(genero__nombre__icontains=termino_busqueda)
+
+    def productos_por_editorial(self, termino_busqueda: str):
+        return Producto.objects.filter(esta_publicado=True).filter(editorial__nombre__icontains=termino_busqueda)
+
+
+
 
 class DetalleProducto(MigaDePanMixin, DetailView):
     template_name = "web/detalle_pro.html"

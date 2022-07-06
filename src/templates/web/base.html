@@ -10,11 +10,12 @@
                 </div>
             </div>
 
-            <form class="col-lg-10 col-md-12">
+            <form action="{% url 'productos-por-busqueda' %}" method=get class="col-lg-10 col-md-12">
                 <div class="row">
                     <div class="col-lg-8">
-                        <input class="form-control" type="search" placeholder="Buscar por título, autor, categoría, etc"
-                               aria-label="Search">
+                            {% csrf_token %}
+                            <input class="form-control" type="search" placeholder="Buscar por título, autor, categoría, etc"
+                                   aria-label="Search" name="q">
                     </div>
                     <div class="col-lg-4">
                         <a href="{% url 'ver-carrito' %}">
